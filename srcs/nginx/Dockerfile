@@ -14,32 +14,29 @@ FROM alpine:3.12
 
 LABEL maintainer="gbroccol@student.21-school.com"
 
-EXPOSE 80 443
+EXPOSE 80 443 22
+
 
 # update			синхронизация и обновление индексных файлов пакетов
 # upgrade			обновление всего установленного на данный момент софта в системе
 # nginx				HTTP-сервер и обратный прокси-сервер, почтовый прокси-сервер
 #					а также TCP/UDP прокси-сервер общего назначения
 
-RUN apk update && apk upgrade && apk add nginx openssl
+RUN apk update && apk upgrade && apk add --no-cache nginx openssl openssh 
+# supervisor
 
-# # изменение конфигурационных файлов
-# # wp-config.php			Wordpress
-# RUN rm var/www/html/wordpress/wp-config-sample.php
-# COPY srcs/wp-config.php ./var/www/html/wordpress
+# RUN ssh-keygen -A
 
 # default				nginx
-COPY /srcs/default ./etc/nginx/conf.d/default
+# COPY default ./etc/nginx/conf.d/default
 
-# #config.inc.php			PhpMyAdmin
-# RUN rm var/www/html/phpmyadmin/config.sample.inc.php
-# COPY srcs/config.inc.php ./var/www/html/phpmyadmin
+# RUN mkdir /www && chown -R www:www /var/lib/nginx && chown -R www:www /www && mkdir /run/nginx
 
-# #MySQL
-# COPY srcs/mysql.sql ./tmp
-# RUN service mysql start && mysql -u root --password= < ./tmp/mysql.sql
 
-# COPY srcs/autoindex.sh ./
+#COPY default ./etc/nginx/conf.d/default
+COPY default /etc/nginx/nginx.conf
+COPY index.html ./www/index.html
+# COPY supervisord.conf /etc/supervisord.conf
 
 # ssl
 # req					генерация запросов на подпись сертификата
@@ -61,6 +58,9 @@ RUN openssl req -x509 -nodes -newkey rsa:2048 -days 365 \
 # COPY /srcs/init.sh ./
 # RUN chmod +x init.sh
 
+RUN mkdir -p /run/nginx
+
+# CMD		/usr/bin/supervisord -c /etc/supervisord.conf
 
 CMD		nginx -g 'daemon off;';\
 		sh
