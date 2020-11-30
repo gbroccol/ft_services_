@@ -21,11 +21,18 @@ kubectl apply -f ./srcs/metallb-config.yaml
 # eval $(minikube -p minikube docker-env)
 eval $(minikube docker-env)
 
+
 # nginx container
 printf "\n>> Nginx is building... \n"
 docker build -t nginx_image ./srcs/nginx
 echo "Done. "
-kubectl apply -f ./srcs/nginx/nginx.yaml
+# kubectl apply -f ./srcs/nginx/nginx.yaml
+
+# kubectl get svc
+# kubectl delete svc nginx-service
+# kubectl get deploy
+# kubectl delete deploy nginx-deployment
+
 
 # minikube dashboard
 # # mysql container
