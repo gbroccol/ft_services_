@@ -28,14 +28,14 @@ docker build -t nginx_image ./srcs/nginx
 echo "Done. "
 kubectl apply -f ./srcs/nginx/nginx.yaml
 
-# kubectl get svc
-# kubectl delete svc nginx-service
-# kubectl get deploy
-# kubectl delete deploy nginx-deployment
+                            # kubectl get svc
+                            # kubectl delete svc nginx-service
+                            # kubectl get deploy
+                            # kubectl delete deploy nginx-deployment
 
 
 minikube dashboard
-# # mysql container
+# mysql container
 # printf "\n>> MySQL is building ... \n"
 # docker build -t mysql ./srcs/mysql > /dev/null
 # echo "Done. "
