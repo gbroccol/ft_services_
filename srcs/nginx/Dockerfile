@@ -13,7 +13,11 @@
 FROM alpine:3.12
 EXPOSE 80 443 22
 
-RUN apk update && apk upgrade && apk add --no-cache nginx openssl openssh supervisor
+VOLUME [ “/sys/fs/cgroup” ]
+
+RUN apk update && apk upgrade && apk add --no-cache nginx openssl openrc openssh supervisor
+
+RUN	adduser -D 'gbroccol'; echo "gbroccol:password" | chpasswd;
 
 RUN mkdir /www
 
@@ -28,6 +32,11 @@ RUN openssl req -x509 -nodes -newkey rsa:2048 -days 365 \
 	-subj "/C=RU/ST=MOSCOW/L=MOSCOW/O=school_21/CN=localhost"
 
 RUN chmod +x start.sh
+
+RUN mkdir -p /run/nginx
+RUN mkdir -p /run/sshd
+RUN chmod 744 /run/nginx
+RUN chmod 744 /run/sshd
 
 RUN mkdir -p /run/nginx
 
