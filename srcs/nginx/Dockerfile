@@ -11,11 +11,11 @@
 # **************************************************************************** #
 
 FROM alpine:3.12
-EXPOSE 80 443 22
+RUN apk update && apk upgrade
+
+RUN apk add --no-cache nginx openssl openrc openssh supervisor
 
 VOLUME [ “/sys/fs/cgroup” ]
-
-RUN apk update && apk upgrade && apk add --no-cache nginx openssl openrc openssh supervisor
 
 RUN	adduser -D 'gbroccol'; echo "gbroccol:password" | chpasswd;
 
@@ -40,4 +40,5 @@ RUN chmod 744 /run/sshd
 
 RUN mkdir -p /run/nginx
 
+EXPOSE 80 443 22
 ENTRYPOINT [ "/start.sh" ]
