@@ -5,7 +5,7 @@
 # 		--driver=virtualbox --cpus=2 --memory='3000' --disk-size='20000mb' \
 # 		--host-only-cidr='192.168.99.1/24' \
 minikube start --vm-driver=virtualbox  
-
+eval $(minikube docker-env)
 # enabling addons
 # minikube addons enable metrics-server
 # minikube addons enable dashboard
@@ -19,13 +19,14 @@ kubectl apply -f ./srcs/metallb-config.yaml
 
 # building containers
 # eval $(minikube -p minikube docker-env)
-eval $(minikube docker-env)
+# eval $(minikube docker-env)
 
 # nginx container
 printf "\n>> Nginx is building... \n"
 docker build -t nginx_image ./srcs/nginx
 echo "Done. "
-kubectl apply -f ./srcs/nginx/nginx.yaml
+kubectl apply -f ./srcs/nginx/nginx-deployment.yaml
+kubectl apply -f ./srcs/nginx/nginx-service.yaml
 
                                 # kubectl get svc
                                 # kubectl delete svc nginx-service
@@ -38,11 +39,14 @@ docker build -t mysql_image ./srcs/mysql
 echo "Done. "
 kubectl apply -f ./srcs/mysql/mysql.yaml
 
+                                # kubectl get pod
+                                # kubectl exec -it <pod-name> sh
+
 # wordpress container
-printf "\n>> Wordpress is building ... \n"
-docker build -t wp_image ./srcs/wordpress
-echo "Done. "
-kubectl apply -f ./srcs/wordpress/wordpress.yaml
+# printf "\n>> Wordpress is building ... \n"
+# docker build -t wp_image ./srcs/wordpress
+# echo "Done. "
+# kubectl apply -f ./srcs/wordpress/wordpress.yaml
 
 # phpmyadmin container
 printf "\n>> PhpMyAdmin is building ... \n"

@@ -1,44 +1,35 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Dockerfile                                         :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: gbroccol <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/06/29 14:29:15 by gbroccol          #+#    #+#              #
-#    Updated: 2020/06/29 14:29:15 by gbroccol         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+FROM	alpine
 
-FROM alpine:3.12
-RUN apk update && apk upgrade
+RUN 	apk update && \
+		apk add openrc 
 
-RUN apk add --no-cache nginx openssl openrc openssh supervisor
+RUN		apk add nginx && \
+		apk add supervisor
 
-VOLUME [ “/sys/fs/cgroup” ]
+RUN		apk add openssl && \
+		apk add openssh
 
-RUN	adduser -D 'gbroccol'; echo "gbroccol:password" | chpasswd;
+RUN		adduser -D 'monie'; echo "monie:qwerty" | chpasswd;
 
-RUN mkdir /www
+RUN 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+		-subj '/C=RU/ST=Moscow/L=Moscow/O=42/OU=21/CN=monie' \
+		-keyout /etc/ssl/localhost.key \
+		-out /etc/ssl/localhost.crt
 
-COPY index.html /www/index.html
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY start.sh /start.sh
-COPY supervisor.conf /supervisor.conf
+RUN		mkdir www
 
-RUN openssl req -x509 -nodes -newkey rsa:2048 -days 365 \
-	-keyout /etc/ssl/private/localhost.key \
-	-out /etc/ssl/certs/localhost.crt \
-	-subj "/C=RU/ST=MOSCOW/L=MOSCOW/O=school_21/CN=localhost"
+COPY	./srcs/index.html /www/
 
-RUN chmod +x start.sh
+COPY	./srcs/style.css /www/
 
-RUN mkdir -p /run/nginx
-RUN mkdir -p /run/sshd
-RUN chmod 744 /run/nginx
-RUN chmod 744 /run/sshd
+COPY 	./srcs/nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN mkdir -p /run/nginx
+COPY 	./srcs/supervisord.conf /etc/supervisord.conf
 
-EXPOSE 80 443 22
-ENTRYPOINT [ "/start.sh" ]
+COPY 	./srcs/start.sh start.sh
+
+RUN 	chmod 711 start.sh
+
+EXPOSE	80 443 22
+
+CMD		[ "sh", "start.sh" ]
