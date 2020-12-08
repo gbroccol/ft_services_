@@ -1,20 +1,30 @@
-FROM alpine:3.12
-RUN apk update && apk upgrade
+FROM	alpine:3.12
+RUN		apk update && apk upgrade
+RUN		apk add openrc
 
-RUN apk add --no-cache mysql mysql-client openrc
+RUN		apk add --no-cache	nginx supervisor \
+							php7 php7-fpm php7-opcache \
+							php7-gd php7-mysqli php7-zlib php7-curl \
+							php7-mbstring php7-json php7-session
 
-# RUN mkdir "/run/mysqld" && chown -R mysql /run/mysqld
+RUN		mkdir -p /www/
 
-COPY start.sh /start.sh
-RUN chmod +x start.sh
+COPY	start.sh /start.sh
+RUN		chmod +x start.sh
 
-# # COPY my.cnf /etc/
-# # RUN chmod +x /etc/my.cnf
+# tar	z - delete
+# 		x - delete
+# 		v - delete
+# 		f - delete
 
-# # COPY mlsite.sql mlsite.sql
-# # RUN chmod +x mlsite.sql
+RUN     wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz && \
+        tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz && \
+        rm phpMyAdmin-5.0.2-all-languages.tar.gz && \
+        mv phpMyAdmin-5.0.2-all-languages /www/phpmyadmin
 
-# # RUN openrc default
+COPY 	nginx.conf /etc/nginx/conf.d/default.conf
+COPY    config.inc.php /www/phpmyadmin/
+COPY 	supervisord.conf /etc/supervisord.conf
 
 EXPOSE 5000 
 ENTRYPOINT [ "sh", "start.sh" ]
