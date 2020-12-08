@@ -27,26 +27,23 @@ docker build -t nginx_image ./srcs/nginx
 echo "Done. "
 kubectl apply -f ./srcs/nginx/nginx-deployment.yaml
 kubectl apply -f ./srcs/nginx/nginx-service.yaml
-
-                                # kubectl get svc
-                                # kubectl delete svc nginx-service
-                                # kubectl get deploy
-                                # kubectl delete deploy nginx-deployment
-
+															# kubectl get svc
+															# kubectl delete svc nginx-service
+															# kubectl get deploy
+															# kubectl delete deploy nginx-deployment
 # mysql container
 printf "\n>> Mysql is building... \n"
 docker build -t mysql_image ./srcs/mysql
 echo "Done. "
-kubectl apply -f ./srcs/mysql/mysql.yaml
-
-                                # kubectl get pod
-                                # kubectl exec -it <pod-name> sh
-
+kubectl apply -f ./srcs/mysql/mysql-deployment.yaml
+kubectl apply -f ./srcs/mysql/mysql-service.yaml
+															# kubectl get pod
+															# kubectl exec -it <pod-name> sh
 # wordpress container
-# printf "\n>> Wordpress is building ... \n"
-# docker build -t wp_image ./srcs/wordpress
-# echo "Done. "
-# kubectl apply -f ./srcs/wordpress/wordpress.yaml
+printf "\n>> Wordpress is building ... \n"
+docker build -t wp_image ./srcs/wordpress
+echo "Done. "
+kubectl apply -f ./srcs/wordpress/wordpress.yaml
 
 # phpmyadmin container
 printf "\n>> PhpMyAdmin is building ... \n"
