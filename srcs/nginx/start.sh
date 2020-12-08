@@ -1,6 +1,6 @@
 #!bin/sh
 
-rc default
+openrc default
 
 mkdir /run/nginx
 mkdir /run/sshd

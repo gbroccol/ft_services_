@@ -1,34 +1,26 @@
-FROM	alpine
+FROM	alpine:3.12
+RUN		apk update && apk upgrade
+RUN		apk add openrc
 
-RUN 	apk update && \
-		apk add openrc 
+RUN		apk add nginx supervisor openssl openssh
 
-RUN		apk add nginx && \
-		apk add supervisor
-
-RUN		apk add openssl && \
-		apk add openssh
-
-RUN		adduser -D 'monie'; echo "monie:qwerty" | chpasswd;
+RUN		adduser -D 'gbroccol'; echo "gbroccol:password" | chpasswd;
 
 RUN 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-		-subj '/C=RU/ST=Moscow/L=Moscow/O=42/OU=21/CN=monie' \
+		-subj '/C=RU/ST=Moscow/L=Moscow/O=42/OU=21/CN=gbroccol' \
 		-keyout /etc/ssl/localhost.key \
 		-out /etc/ssl/localhost.crt
 
 RUN		mkdir www
 
-COPY	./srcs/index.html /www/
+COPY	./index.html /www/
 
-COPY	./srcs/style.css /www/
+COPY 	./nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY 	./srcs/nginx.conf /etc/nginx/conf.d/default.conf
+COPY 	./supervisord.conf /etc/supervisord.conf
 
-COPY 	./srcs/supervisord.conf /etc/supervisord.conf
-
-COPY 	./srcs/start.sh start.sh
-
-RUN 	chmod 711 start.sh
+COPY 	./start.sh start.sh
+RUN 	chmod +x start.sh
 
 EXPOSE	80 443 22
 
