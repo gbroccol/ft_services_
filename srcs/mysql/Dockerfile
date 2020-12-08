@@ -1,29 +1,23 @@
-FROM alpine:3.12
-RUN apk update && apk upgrade
+FROM	alpine:3.12
+RUN		apk update && apk upgrade
+RUN		apk add openrc
 
-VOLUME [ “/sys/fs/cgroup” ]
-# VOLUME [ “/sys/fs/cgroup” ]
+# RUN apk add mariadb mariadb-common mariadb-client
 
-# RUN apk add --no-cache mysql mysql-client 
-RUN apk add mariadb mariadb-common mariadb-client openrc
+# RUN		mkdir "/run/mysqld" && \
+# 		chown -R mysql /run/mysqld
 
-RUN		mkdir "/run/mysqld" && \
+
+RUN		apk add mysql mysql-client && \
+		mkdir "/run/mysqld" && \
 		chown -R mysql /run/mysqld
-
-
-# RUN mkdir "/run/mysqld" && chown -R mysql /run/mysqld
 
 COPY start.sh /start.sh
 RUN chmod +x start.sh
 
-# COPY my.cnf /etc/
-# RUN chmod +x /etc/my.cnf
-
-COPY mysql_create.sql /mysql_create.sql
-# RUN chmod +x mysql_create.sql
-
+COPY create_db.sql /create_db.sql
 COPY gbroccol.sql /gbroccol.sql
-# RUN chmod +x gbroccol.sql
+COPY	my.cnf /etc/my.cnf
 
 RUN mkdir -p /run/openrc && touch /run/openrc/softlevel
 
