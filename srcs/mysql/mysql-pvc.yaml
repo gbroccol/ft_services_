@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim # create mysql data-disk запрос к Persistent Volumes на хранение от пользователя
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes: # Типы доступа
+  - ReadWriteOnce 
+  resources:
+    requests:
+      storage: 1Gi

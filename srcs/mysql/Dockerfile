@@ -2,12 +2,6 @@ FROM	alpine:3.12
 RUN		apk update && apk upgrade
 RUN		apk add openrc
 
-# RUN apk add mariadb mariadb-common mariadb-client
-
-# RUN		mkdir "/run/mysqld" && \
-# 		chown -R mysql /run/mysqld
-
-
 RUN		apk add mysql mysql-client && \
 		mkdir "/run/mysqld" && \
 		chown -R mysql /run/mysqld
