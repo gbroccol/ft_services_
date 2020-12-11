@@ -22,9 +22,9 @@ spec:
     protocol: TCP
     port: 21
     targetPort: 21
-  - name: ftps-transfer-two # установить соединение
-    protocol: TCP
-    port: 20
-    targetPort: 20
+  # - name: ftps-transfer-two # установить соединение
+  #   protocol: TCP
+  #   port: 20
+  #   targetPort: 20
 status:
   loadBalancer: {}

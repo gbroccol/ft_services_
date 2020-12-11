@@ -20,4 +20,3 @@ spec:
         ports:
         - containerPort: 50021    # установить соединение
         - containerPort: 21       # передача данных
-        - containerPort: 20       # 

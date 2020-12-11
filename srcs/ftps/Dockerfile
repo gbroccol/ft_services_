@@ -2,7 +2,6 @@ FROM	alpine:3.12
 RUN		apk update && apk upgrade
 RUN		apk add openrc
 
-# ftp - File Transfer Protocol
 RUN		apk add vsftpd openssl
 
 COPY	start.sh /start.sh
@@ -18,5 +17,5 @@ RUN 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 		-keyout /etc/ssl/private/vsftpd.key \
 		-out /etc/ssl/certs/vsftpd.crt
 
-EXPOSE 21 50021 20
+EXPOSE 21 50021
 ENTRYPOINT [ "sh", "start.sh" ]
