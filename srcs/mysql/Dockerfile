@@ -13,7 +13,5 @@ COPY create_db.sql /create_db.sql
 COPY gbroccol.sql /gbroccol.sql
 COPY	my.cnf /etc/my.cnf
 
-RUN mkdir -p /run/openrc && touch /run/openrc/softlevel
-
 EXPOSE 3306 
 ENTRYPOINT [ "sh", "start.sh" ]

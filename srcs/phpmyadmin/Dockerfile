@@ -12,11 +12,6 @@ RUN		mkdir -p /www/
 COPY	start.sh /start.sh
 RUN		chmod +x start.sh
 
-# tar	z - delete
-# 		x - delete
-# 		v - delete
-# 		f - delete
-
 RUN     wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz && \
         tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz && \
         rm phpMyAdmin-5.0.2-all-languages.tar.gz && \
