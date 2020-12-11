@@ -15,9 +15,103 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 3,
+	"id": 5,
 	"links": [],
 	"panels": [
+	  {
+		"datasource": "influxdb",
+		"fieldConfig": {
+		  "defaults": {
+			"custom": {},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 12,
+		  "x": 0,
+		  "y": 0
+		},
+		"id": 10,
+		"options": {
+		  "colorMode": "value",
+		  "graphMode": "area",
+		  "justifyMode": "auto",
+		  "orientation": "auto",
+		  "reduceOptions": {
+			"calcs": [
+			  "mean"
+			],
+			"fields": "",
+			"values": false
+		  },
+		  "textMode": "auto"
+		},
+		"pluginVersion": "7.3.5",
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "10s"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "docker_container_mem",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"queryType": "randomWalk",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"usage_percent"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "io.kubernetes.container.name",
+				"operator": "=",
+				"value": "grafana"
+			  }
+			]
+		  }
+		],
+		"timeFrom": null,
+		"timeShift": null,
+		"title": "Memory_usage",
+		"type": "stat"
+	  },
 	  {
 		"aliasColors": {},
 		"bars": true,
@@ -52,7 +146,7 @@
 		"gridPos": {
 		  "h": 8,
 		  "w": 12,
-		  "x": 0,
+		  "x": 12,
 		  "y": 0
 		},
 		"hiddenSeries": false,
@@ -69,8 +163,11 @@
 		"lines": false,
 		"linewidth": 1,
 		"nullPointMode": "null",
+		"options": {
+		  "alertThreshold": true
+		},
 		"percentage": false,
-		"pluginVersion": "7.1.5",
+		"pluginVersion": "7.3.5",
 		"pointradius": 2,
 		"points": false,
 		"renderer": "flot",
@@ -162,6 +259,129 @@
 		  "align": false,
 		  "alignLevel": null
 		}
+	  },
+	  {
+		"cards": {
+		  "cardPadding": null,
+		  "cardRound": null
+		},
+		"color": {
+		  "cardColor": "#b4ff00",
+		  "colorScale": "sqrt",
+		  "colorScheme": "interpolateOranges",
+		  "exponent": 0.5,
+		  "mode": "spectrum"
+		},
+		"dataFormat": "timeseries",
+		"datasource": "influxdb",
+		"fieldConfig": {
+		  "defaults": {
+			"custom": {
+			  "align": null,
+			  "filterable": false
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 12,
+		  "x": 6,
+		  "y": 8
+		},
+		"heatmap": {},
+		"hideZeroBuckets": false,
+		"highlightCards": true,
+		"id": 12,
+		"legend": {
+		  "show": false
+		},
+		"pluginVersion": "7.3.5",
+		"reverseYBuckets": false,
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "10s"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "docker_container_status",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"queryType": "randomWalk",
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"pid"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "median"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "io.kubernetes.container.name",
+				"operator": "=",
+				"value": "grafana"
+			  }
+			]
+		  }
+		],
+		"timeFrom": null,
+		"timeShift": null,
+		"title": "Pid",
+		"tooltip": {
+		  "show": true,
+		  "showHistogram": false
+		},
+		"type": "heatmap",
+		"xAxis": {
+		  "show": true
+		},
+		"xBucketNumber": null,
+		"xBucketSize": null,
+		"yAxis": {
+		  "decimals": null,
+		  "format": "short",
+		  "logBase": 1,
+		  "max": null,
+		  "min": null,
+		  "show": true,
+		  "splitFactor": null
+		},
+		"yBucketBound": "auto",
+		"yBucketNumber": null,
+		"yBucketSize": null
 	  }
 	],
 	"refresh": false,
@@ -172,7 +392,7 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-15m",
+	  "from": "now-30m",
 	  "to": "now"
 	},
 	"timepicker": {

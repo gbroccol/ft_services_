@@ -15,9 +15,107 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 4,
 	"links": [],
 	"panels": [
+	  {
+		"datasource": "influxdb",
+		"fieldConfig": {
+		  "defaults": {
+			"custom": {
+			  "align": null,
+			  "filterable": false
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 12,
+		  "x": 0,
+		  "y": 0
+		},
+		"id": 10,
+		"options": {
+		  "colorMode": "value",
+		  "graphMode": "area",
+		  "justifyMode": "auto",
+		  "orientation": "auto",
+		  "reduceOptions": {
+			"calcs": [
+			  "mean"
+			],
+			"fields": "",
+			"values": false
+		  },
+		  "textMode": "auto"
+		},
+		"pluginVersion": "7.3.5",
+		"targets": [
+		  {
+			"groupBy": [
+			  {
+				"params": [
+				  "10s"
+				],
+				"type": "time"
+			  },
+			  {
+				"params": [
+				  "null"
+				],
+				"type": "fill"
+			  }
+			],
+			"measurement": "docker_container_mem",
+			"orderByTime": "ASC",
+			"policy": "default",
+			"query": "SELECT mean(\"value\") FROM \"docker_container_mem\" WHERE (\"io.kubernetes.pod.name\" = 'select tag value') AND $timeFilter GROUP BY time($__interval) fill(null)",
+			"queryType": "randomWalk",
+			"rawQuery": false,
+			"refId": "A",
+			"resultFormat": "time_series",
+			"select": [
+			  [
+				{
+				  "params": [
+					"usage_percent"
+				  ],
+				  "type": "field"
+				},
+				{
+				  "params": [],
+				  "type": "mean"
+				}
+			  ]
+			],
+			"tags": [
+			  {
+				"key": "io.kubernetes.container.name",
+				"operator": "=",
+				"value": "influxdb"
+			  }
+			]
+		  }
+		],
+		"timeFrom": null,
+		"timeShift": null,
+		"title": "Memory_usage",
+		"type": "stat"
+	  },
 	  {
 		"aliasColors": {},
 		"bars": true,
@@ -52,7 +150,7 @@
 		"gridPos": {
 		  "h": 8,
 		  "w": 12,
-		  "x": 0,
+		  "x": 12,
 		  "y": 0
 		},
 		"hiddenSeries": false,
@@ -69,8 +167,11 @@
 		"lines": false,
 		"linewidth": 1,
 		"nullPointMode": "null",
+		"options": {
+		  "alertThreshold": true
+		},
 		"percentage": false,
-		"pluginVersion": "7.1.5",
+		"pluginVersion": "7.3.5",
 		"pointradius": 2,
 		"points": false,
 		"renderer": "flot",
@@ -172,7 +273,7 @@
 	  "list": []
 	},
 	"time": {
-	  "from": "now-5m",
+	  "from": "now-30m",
 	  "to": "now"
 	},
 	"timepicker": {
