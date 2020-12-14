@@ -56,7 +56,7 @@ docker build -t ftps_image ./srcs/ftps
 echo "Done. "
 kubectl apply -f ./srcs/ftps/ftps-deploy.yaml
 kubectl apply -f ./srcs/ftps/ftps-service.yaml
-echo -e "\x1b[1;35m*****Ftps is ready*****\n\x1b[0m"
+echo -e "\x1b[1;35m*****Ftps is ready*****\n\x1b[0m" 
 
 # telegraf metrics collector container
 printf "\n>> Telegraf is building ... \n"
@@ -83,4 +83,19 @@ kubectl apply -f ./srcs/grafana/grafana-deploy.yaml
 kubectl apply -f ./srcs/grafana/grafana-service.yaml
 echo -e "\x1b[1;35m*****Grafana is ready*****\n\x1b[0m"
 
+open http://192.168.99.201
+
 minikube dashboard
+
+# check
+# kubectl exec deploy/ftps -- pkill vsftpd
+# kubectl exec deploy/grafana -- pkill grafana
+# kubectl exec daemonset/telegraf -- pkill telegraf-1.16.2
+# kubectl exec deploy/influxdb -- pkill influx
+# kubectl exec deploy/wp -- pkill nginx
+# kubectl exec deploy/wp -- pkill php-fpm7
+# kubectl exec deploy/php -- pkill nginx
+# kubectl exec deploy/php -- pkill php-fpm7
+# kubectl exec deploy/mysql -- pkill /usr/bin/mysqld 
+# kubectl exec deploy/nginx -- pkill nginx
+# kubectl exec deploy/nginx -- pkill sshd

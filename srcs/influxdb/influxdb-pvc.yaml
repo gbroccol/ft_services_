@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: influxdb-pv-claim # rename
+  name: influxdb-pv-claim
 spec:
   storageClassName: manual
   accessModes:

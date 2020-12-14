@@ -2,17 +2,18 @@ FROM	alpine:3.12
 RUN		apk update && apk upgrade
 RUN		apk add openrc
 
-RUN apk add --no-cache grafana --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+RUN		apk add --no-cache grafana --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
-COPY srcs/grafana.ini /etc/grafana.ini
+COPY	start.sh /start.sh
+RUN		chmod +x start.sh
 
-COPY srcs/provisioning /usr/share/grafana/conf/provisioning
+COPY	grafana.ini /etc/grafana.ini
 
-RUN mkdir dashboards
-COPY srcs/dashboards /dashboards/
+COPY	srcs/provisioning /usr/share/grafana/conf/provisioning
 
-EXPOSE 3000
+RUN		mkdir dashboards
+COPY	srcs/dashboards /dashboards/
 
-COPY /srcs/start.sh /start.sh
+EXPOSE	3000
 
-CMD ./start.sh
+CMD		./start.sh

@@ -1,13 +1,11 @@
-FROM	alpine:3.12
-RUN		apk update && apk upgrade
-RUN		apk add openrc
+FROM		alpine:3.12
+RUN			apk update && apk upgrade
+RUN			apk add openrc
 
-RUN apk add influxdb
+RUN			apk add influxdb
 
-COPY influxdb.conf /etc/influxdb.conf
+COPY		influxdb.conf /etc/influxdb.conf
 
-EXPOSE 8086
+EXPOSE		8086
 
-VOLUME /var/lib/influxdb
-
-ENTRYPOINT influxd -config /etc/influxdb.conf
+ENTRYPOINT 	influxd -config /etc/influxdb.conf

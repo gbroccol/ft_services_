@@ -18,5 +18,5 @@ spec:
         image: ftps_image
         imagePullPolicy: Never
         ports:
-        - containerPort: 50021    # установить соединение
+        - containerPort: 50021    # установить пассивное соединение
         - containerPort: 21       # передача данных
